@@ -3,48 +3,33 @@ from random import shuffle
 
 
 def starting_chip_count():
-    multiple_repeats = False
-    reply_list = ["Please, sir, this is a serious establishment.",
-                  "Does this look like a joke to you?",
-                  "Please, I'm not somebody who likes it's time wasted,",
-                  "Very funny..."]
-
     while True:
+        print("How many chips would you like to play with?")
         bank = input()
 
-        if not bank.isnumeric() and not multiple_repeats:
-            print("You can only play with money at this casino good sir. "
-                  "So, how much will it be?")
-            multiple_repeats = True
-            continue
-        elif not bank.isnumeric() and multiple_repeats:
-            shuffle(reply_list)
-            print(reply_list[0])
+        if not bank.isnumeric():
+            print("This is not a valid chip count.")
             continue
         elif bank.isnumeric() and int(bank) == 0:
-            shuffle(reply_list)
-            print(reply_list[0])
-            multiple_repeats = True
+            print("You cannot play with 0 chips.")
             continue
         elif bank.isnumeric() and int(bank) < 25:
-            print("We can't accept anything less than 25 chips here sir,"
-                  "please present a bigger amount.")
-            multiple_repeats = True
+            print("You cannot play with less than 25 chips.")
             continue
         elif bank.isnumeric() and int(bank) > 1000000000:
-            print("Mmm, I'm not sure the house can match this price sir, "
-                  "please play with a smaller amount...")
-            multiple_repeats = True
+            print("You cannot play with more than 1,000,000 chips.")
             continue
         else:
+            print("\n")
             break
 
     return int(bank)
 
 
 def start_of_turn():
-    print("The minimum bets for this round is " + minimum_bet() + ".")
-    print("Place your bet!")
+    print("The minimum bet for this round is " + minimum_bet() + ".")
+
+    check_funds()
 
     place_bet()
 
@@ -65,19 +50,41 @@ def start_of_turn():
         print(card)
 
 
-def place_bet():
-    multiple_repeats = False
-    reply_list = ["Please, sir, this is a serious establishment.",
-                  "Does this look like a joke to you?",
-                  "Please, I'm not somebody who likes it's time wasted,",
-                  "Very funny..."]
+def minimum_bet():
+    result = round(player.bank * 0.05)
 
+    if result < 5:
+        return "5"
+    else:
+        return str(result)
+
+
+def check_funds():
+    pass
+
+
+def place_bet():
     while True:
+        print("Place your bet!")
         bet = input()
 
-        if not bet.isnumeric() and not multiple_repeats:
-            print("You can only play with money at this casino good sir. "
-                  "So, how much will it be?")
+        if not bet.isnumeric():
+            print("This is not a valid chip count.")
+            continue
+        elif bet.isnumeric() and int(bank) == 0:
+            print("You cannot play with 0 chips.")
+            continue
+        elif bank.isnumeric() and int(bank) < 25:
+            print("You cannot play with less than 25 chips.")
+            continue
+        elif bank.isnumeric() and int(bank) > 1000000000:
+            print("You cannot play with more than 1,000,000 chips.")
+            continue
+        else:
+            print("\n")
+            break
+
+        if not bet.isnumeric():
             multiple_repeats = True
             continue
         elif not bet.isnumeric() and multiple_repeats:
@@ -99,24 +106,10 @@ def place_bet():
     return int(bet)
 
 
-def minimum_bet():
-    result = 5 * round((player.bank * 0.05) / 5)
-
-    if result == 0:
-        return "5"
-    else:
-        return str(result)
-
-
 if __name__ == "__main__":
-
-    print("Welcome gentleman, please take a seat...")
-    print("How much money is on the table tonight?")
 
     player = Player(starting_chip_count())
     dealer = Dealer()
-
-    print("Excellent, let's begin!" + "\n" + "\n")
 
     deck = Deck()
     deck.shuffle_deck()
