@@ -20,7 +20,7 @@ def starting_chip_count():
             print("You cannot play with more than 1,000,000 chips.")
             continue
         else:
-            print("\n")
+            print("")
             break
 
     return int(bank)
@@ -60,7 +60,12 @@ def minimum_bet():
 
 
 def check_funds():
-    pass
+    if player.get_funds() < 25:
+        print("You cannot play with less than 25 chips in your bank!")
+        print("Better luck next time!")
+        exit()
+    else:
+        return
 
 
 def place_bet():
@@ -71,45 +76,20 @@ def place_bet():
         if not bet.isnumeric():
             print("This is not a valid chip count.")
             continue
-        elif bet.isnumeric() and int(bank) == 0:
-            print("You cannot play with 0 chips.")
-            continue
-        elif bank.isnumeric() and int(bank) < 25:
-            print("You cannot play with less than 25 chips.")
-            continue
-        elif bank.isnumeric() and int(bank) > 1000000000:
-            print("You cannot play with more than 1,000,000 chips.")
-            continue
-        else:
-            print("\n")
-            break
-
-        if not bet.isnumeric():
-            multiple_repeats = True
-            continue
-        elif not bet.isnumeric() and multiple_repeats:
-            shuffle(reply_list)
-            print(reply_list[0])
-            continue
-        elif bet.isnumeric() and int(bet) == 0:
-            shuffle(reply_list)
-            print(reply_list[0])
-            multiple_repeats = True
-            continue
-        elif bet.isnumeric() and int(bet) > player.bank:
-            print("You don't have enough chips! You need to bet a smaller amount...")
-            multiple_repeats = True
+        elif int(bet) > player.get_funds():
+            print("You cannot bet more chips than what you have in your bank!")
             continue
         else:
             break
 
-    return int(bet)
+    table.add_to_bets(int(bet))
 
 
 if __name__ == "__main__":
 
     player = Player(starting_chip_count())
     dealer = Dealer()
+    table = Table()
 
     deck = Deck()
     deck.shuffle_deck()
