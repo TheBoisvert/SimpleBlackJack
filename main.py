@@ -146,11 +146,12 @@ def blackjack():
     winnings = round(player.get_bets() * 1.5)
     print("You bet a total of {} chips, you then win {} chips!".format(player.get_bets(), winnings))
     player.add_funds(winnings)
+    print("you now have a total of {} chips!".format(player.get_funds()))
 
     # Asks the player if he wants to play again
     expected = ["Y", "N", "y", "n"]
     while True:
-        play_again = input("Would you like to play another round?")
+        play_again = input("Would you like to play another round? (Y / N) : ")
 
         if play_again not in expected:
             print("This is not a valid choice!")
