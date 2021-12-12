@@ -153,7 +153,11 @@ class Card:
 
         :return: a formatted string indicating the card's suit and rank
         """
-        return "{} of {} --> {}".format(self.rank, self.suit, self.value)
+
+        if self.rank == "Ace":
+            return "{} of {} --> {}".format(self.rank, self.suit, "1 or 11")
+        else:
+            return "{} of {} --> {}".format(self.rank, self.suit, self.value)
 
 
 class Deck:

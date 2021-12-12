@@ -122,14 +122,25 @@ def check_blackjack():
     """
 
     player_hand_value = 0
+    ace_count = 0
+
     dealer_hand_value = 0
+
     for card in player.hand:
+        if card.rank == "Ace":
+            ace_count = ace_count + 1
         player_hand_value = player_hand_value + card.value
     for card in dealer.hand:
         dealer_hand_value = dealer_hand_value + card.value
 
-    if player_hand_value == 21 and dealer_hand_value != 21:
-        blackjack()
+    while True:
+        if player_hand_value > 21 and ace_count > 0:
+            player_hand_value = player_hand_value - 10
+            ace_count = ace_count - 1
+        if player_hand_value == 21 and dealer_hand_value != 21:
+            blackjack()
+        else:
+            return
 
 
 def blackjack():
@@ -198,6 +209,15 @@ def deal_or_stand():
             if deal_stand == "DEAL" or deal_stand == "Deal" or deal_stand == "deal":
                 player.add_card_to_hand(deck.draw_card())
 
+                print("\n" * 100)
+
+                print("\n" + "The Dealer's hand :")
+                for card in dealer.hand:
+                    if card == dealer.hand[-1]:
+                        print("~~~")
+                    else:
+                        print(card)
+
                 print("\n" + "Your hand :")
                 for card in player.hand:
                     print(card)
@@ -218,17 +238,22 @@ def check_bust():
     :return: none
     """
 
-    # TODO: how to deal with aces?
-
     player_hand_value = 0
+    ace_count = 0
 
     for card in player.hand:
+        if card.rank == "Ace":
+            ace_count = ace_count + 1
         player_hand_value = player_hand_value + card.value
 
-    if player_hand_value > 21:
-        bust()
-    else:
-        return
+    while True:
+        if player_hand_value > 21 and ace_count > 0:
+            player_hand_value = player_hand_value - 10
+            ace_count = ace_count - 1
+        elif player_hand_value > 21 and ace_count == 0:
+            bust()
+        else:
+            return
 
 
 def bust():
