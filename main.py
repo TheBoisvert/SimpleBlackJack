@@ -62,6 +62,7 @@ def start_of_turn():
     print("\n" + "Your hand :")
     for card in player.hand:
         print(card)
+    print("")
 
     check_blackjack()
 
@@ -77,8 +78,7 @@ def check_funds():
     """
 
     if player.get_funds() < 2:
-        print("You cannot play with less than 2 chips in your bank!")
-        print("Better luck next time!")
+        print("You cannot play with less than 2 chips in your bank. Better luck next time!")
         exit()
     else:
         return
@@ -146,7 +146,8 @@ def blackjack():
     winnings = round(player.get_bets() * 1.5)
     print("You bet a total of {} chips, you then win {} chips!".format(player.get_bets(), winnings))
     player.add_funds(winnings)
-    print("you now have a total of {} chips!".format(player.get_funds()))
+    print("You now have a total of {} chips.".format(player.get_funds()))
+    print("")
 
     # Asks the player if he wants to play again
     expected = ["Y", "N", "y", "n"]
@@ -164,11 +165,11 @@ def blackjack():
 
     # Removes the cards from the player's and dealer's hand, and puts then back in the deck
     for card in player.hand:
-        current_card = player.remove_card_from_hand()
-        deck.add_card(current_card)
+        deck.add_card(card)
+    player.remove_cards_from_hand()
     for card in dealer.hand:
-        current_card = dealer.remove_card_from_hand()
-        deck.add_card(current_card)
+        deck.add_card(card)
+    dealer.remove_cards_from_hand()
 
     # Shuffles the deck
     deck.shuffle_deck()
@@ -188,7 +189,7 @@ def deal_or_stand():
 
     while True:
         deal_stand = input("Would you like to be dealt another card or stand on your current cards? "
-                           "(deal / stand) : ")
+                           "(Deal / Stand) : ")
 
         if deal_stand not in expected:
             print("This is not a valid choice!")
@@ -200,7 +201,9 @@ def deal_or_stand():
                 print("\n" + "Your hand :")
                 for card in player.hand:
                     print(card)
+                print("")
 
+                check_blackjack()
                 check_bust()
 
                 continue
@@ -219,7 +222,7 @@ def check_bust():
 
     player_hand_value = 0
 
-    for card in player.hand():
+    for card in player.hand:
         player_hand_value = player_hand_value + card.value
 
     if player_hand_value > 21:
@@ -239,6 +242,8 @@ def bust():
 
     # Player loses all his bet money
     print("You bet a total of {} chips, you lost everything!".format(player.get_bets()))
+    print("You now have a total of {} chips.".format(player.get_funds()))
+    print("")
 
     # Checks if the player has enough funds to play another round
     check_funds()
@@ -259,11 +264,11 @@ def bust():
 
     # Removes the cards from the player's and dealer's hand, and puts then back in the deck
     for card in player.hand:
-        current_card = player.remove_card_from_hand()
-        deck.add_card(current_card)
+        deck.add_card(card)
+    player.remove_cards_from_hand()
     for card in dealer.hand:
-        current_card = dealer.remove_card_from_hand()
-        deck.add_card(current_card)
+        deck.add_card(card)
+    dealer.remove_cards_from_hand()
 
     # Shuffles the deck
     deck.shuffle_deck()

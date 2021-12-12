@@ -54,14 +54,14 @@ class Player:
 
         self.hand.append(card)
 
-    def remove_card_from_hand(self):
+    def remove_cards_from_hand(self):
         """
-        Removes a card from the player's hand.
+        Removes every card from the player's hand.
 
-        :return: a card object
+        :return: none
         """
 
-        return self.hand.pop()
+        self.hand = []
 
     def add_to_bets(self, bet):
         """
@@ -116,14 +116,14 @@ class Dealer:
 
         self.hand.append(card)
 
-    def remove_card_from_hand(self):
+    def remove_cards_from_hand(self):
         """
-        Removes a card from the dealer's hand.
+        Removes every cards from the dealer's hand.
 
-        :return: a card object
+        :return: none
         """
 
-        return self.hand.pop()
+        self.hand = []
 
 
 class Card:
