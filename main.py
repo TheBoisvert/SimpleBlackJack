@@ -4,6 +4,7 @@ from Classes import *
 def starting_chip_count():
     """
     Establishes the players starting chip count
+
     :return: The player's initial chip count
     """
 
@@ -15,12 +16,15 @@ def starting_chip_count():
             # This also filters out float such as 40.5 or 100.333
             print("This is not a valid chip count.")
             continue
+        # Starting chip count cannot be 0
         elif bank.isnumeric() and int(bank) == 0:
             print("You cannot play with 0 chips.")
             continue
+        # Starting chip count cannot be less than 2, since minimum bet is 2
         elif bank.isnumeric() and int(bank) < 2:
             print("You cannot play with less than 2 chips.")
             continue
+        # Starting chip count cannot be more than 1000000, eat the rich
         elif bank.isnumeric() and int(bank) > 1000000:
             print("You cannot play with more than 1,000,000 chips.")
             continue
@@ -71,21 +75,6 @@ def start_of_turn():
     dealer_hit_or_stand()
 
 
-def check_funds():
-    """
-    Checks if the player has enough funds to play the round
-    Exits the game if the player's chip count is below 2, which is the minimum amount to place a bet.
-
-    :return: none
-    """
-
-    if player.get_funds() < 2:
-        print("You cannot play with less than 2 chips in your bank. Better luck next time!")
-        exit()
-    else:
-        return
-
-
 def place_bet():
     """
     Asks the player to place a bet at the beginning of the current round
@@ -114,6 +103,85 @@ def place_bet():
             break
 
     player.add_to_bets(int(bet))
+
+
+
+
+
+
+
+
+
+
+
+def hit_or_stand():
+    """
+    Asks the player if he wants another card, or if he wants to stand (keep the card he currently has in hand).
+
+    :return: none
+    """
+
+    expected = ["HIT", "Hit", "hit", "STAND", "Stand", "stand"]
+
+    while True:
+        hit_stand = input("Would you like to be dealt another card or stand on your current cards? "
+                          "(Hit / Stand) : ")
+
+        if hit_stand not in expected:
+            print("This is not a valid choice!")
+            continue
+        else:
+            if hit_stand == "HIT" or hit_stand == "Hit" or hit_stand == "hit":
+                player.add_card_to_hand(deck.draw_card())
+
+                print("\n" * 100)
+
+                print("\n" + "The Dealer's hand :")
+                for card in dealer.hand:
+                    if card == dealer.hand[-1]:
+                        print("~~~")
+                    else:
+                        print(card)
+
+                print("\n" + "Your hand :")
+                for card in player.hand:
+                    print(card)
+                print("")
+
+                check_blackjack()
+                check_bust()
+
+                continue
+            else:
+                return
+
+
+def dealer_hit_or_stand():
+    """
+    Does the dealer's actions until either :
+    - his total hand value is above the total hand value of the player
+    - his hand value is 17 or more
+    - he busts
+
+    :return: none
+    """
+
+    pass
+
+
+def check_funds():
+    """
+    Checks if the player has enough funds to play the round
+    Exits the game if the player's chip count is below 2, which is the minimum amount to place a bet.
+
+    :return: none
+    """
+
+    if player.get_funds() < 2:
+        print("You cannot play with less than 2 chips in your bank. Better luck next time!")
+        exit()
+    else:
+        return
 
 
 def check_blackjack():
@@ -181,10 +249,10 @@ def blackjack():
     # Removes the cards from the player's and dealer's hand, and puts then back in the deck
     for card in player.hand:
         deck.add_card(card)
-    player.remove_cards_from_hand()
+    player.reset_hand()
     for card in dealer.hand:
         deck.add_card(card)
-    dealer.remove_cards_from_hand()
+    dealer.reset_hand()
 
     # Shuffles the deck
     deck.shuffle_deck()
@@ -225,73 +293,16 @@ def blackjack_dealer():
     # Removes the cards from the player's and dealer's hand, and puts then back in the deck
     for card in player.hand:
         deck.add_card(card)
-    player.remove_cards_from_hand()
+    player.reset_hand()
     for card in dealer.hand:
         deck.add_card(card)
-    dealer.remove_cards_from_hand()
+    dealer.reset_hand()
 
     # Shuffles the deck
     deck.shuffle_deck()
 
     # Starts a new round
     start_of_turn()
-
-
-def hit_or_stand():
-    """
-    Asks the player if he wants another card, or if he wants to stand (keep the card he currently has in hand).
-
-    :return: none
-    """
-
-    expected = ["HIT", "Hit", "hit", "STAND", "Stand", "stand"]
-
-    while True:
-        hit_stand = input("Would you like to be dealt another card or stand on your current cards? "
-                           "(Hit / Stand) : ")
-
-        if hit_stand not in expected:
-            print("This is not a valid choice!")
-            continue
-        else:
-            if hit_stand == "HIT" or hit_stand == "Hit" or hit_stand == "hit":
-                player.add_card_to_hand(deck.draw_card())
-
-                print("\n" * 100)
-
-                print("\n" + "The Dealer's hand :")
-                for card in dealer.hand:
-                    if card == dealer.hand[-1]:
-                        print("~~~")
-                    else:
-                        print(card)
-
-                print("\n" + "Your hand :")
-                for card in player.hand:
-                    print(card)
-                print("")
-
-                check_blackjack()
-                check_bust()
-
-                continue
-            else:
-                return
-
-
-def dealer_hit_or_stand():
-    """
-    Does the dealer's actions until either :
-    - his total hand value is above the total hand value of the player
-    - his hand value is 17 or more
-    - he busts
-
-    :return: none
-    """
-
-    # TODO: complete this function
-
-    pass
 
 
 def check_bust():
@@ -353,10 +364,10 @@ def bust():
     # Removes the cards from the player's and dealer's hand, and puts then back in the deck
     for card in player.hand:
         deck.add_card(card)
-    player.remove_cards_from_hand()
+    player.reset_hand()
     for card in dealer.hand:
         deck.add_card(card)
-    dealer.remove_cards_from_hand()
+    dealer.reset_hand()
 
     # Shuffles the deck
     deck.shuffle_deck()

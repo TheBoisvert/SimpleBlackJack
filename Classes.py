@@ -9,9 +9,6 @@ values = {'Two': 2, 'Three': 3, 'Four': 4, 'Five': 5, 'Six': 6,
 
 
 class Player:
-    """
-    Groups everything that has to do with the player.
-    """
 
     def __init__(self, bank):
         """
@@ -54,7 +51,7 @@ class Player:
 
         self.hand.append(card)
 
-    def remove_cards_from_hand(self):
+    def reset_hand(self):
         """
         Removes every card from the player's hand.
 
@@ -93,11 +90,27 @@ class Player:
 
         self.bets = 0
 
+    def get_hand_value(self):
+        """
+        A method that counts the hand value of the player
+
+        :return: the player's hand value
+        """
+
+        hand_value = 0
+        ace_count = 0
+
+        for card in self.hand:
+            hand_value = hand_value + card.value
+
+            if hand_value > 21 and ace_count > 0:
+                hand_value = hand_value - 10
+                ace_count = ace_count - 1
+
+        return hand_value
+
 
 class Dealer:
-    """
-    Groups everything that has to do with the dealer.
-    """
 
     def __init__(self):
         """
@@ -116,20 +129,36 @@ class Dealer:
 
         self.hand.append(card)
 
-    def remove_cards_from_hand(self):
+    def reset_hand(self):
         """
-        Removes every cards from the dealer's hand.
+        Removes every card from the dealer's hand.
 
         :return: none
         """
 
         self.hand = []
 
+    def get_hand_value(self):
+        """
+        A method that counts the hand value of the dealer
+
+        :return: the dealer's hand value
+        """
+
+        hand_value = 0
+        ace_count = 0
+
+        for card in self.hand:
+            hand_value = hand_value + card.value
+
+            if hand_value > 21 and ace_count > 0:
+                hand_value = hand_value - 10
+                ace_count = ace_count - 1
+
+        return hand_value
+
 
 class Card:
-    """
-    Groups everything that has to do with cards.
-    """
 
     def __init__(self, suit, rank):
         """
@@ -161,9 +190,6 @@ class Card:
 
 
 class Deck:
-    """
-    Groups everything that has to do with the dealer.
-    """
 
     def __init__(self):
         """

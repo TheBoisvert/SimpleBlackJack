@@ -6,6 +6,7 @@ I've taken the rules from this website : https://bicyclecards.com/how-to-play/bl
 
 #### Notes and tweaks
 This plays with a single pack of cards.  
+The cards are placed back into the deck and the deck shuffled after each round, no card counting allowed ;)  
 Betting limits follow general rule, minimum of 2 and maximum of 500.  
 The dealer's bank is infinite.
 
