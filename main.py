@@ -66,7 +66,9 @@ def start_of_turn():
 
     check_blackjack()
 
-    deal_or_stand()
+    hit_or_stand()
+
+    dealer_hit_or_stand()
 
 
 def check_funds():
@@ -139,6 +141,8 @@ def check_blackjack():
             ace_count = ace_count - 1
         if player_hand_value == 21 and dealer_hand_value != 21:
             blackjack()
+        if dealer_hand_value == 21 and player_hand_value != 21:
+            blackjack_dealer()
         else:
             return
 
@@ -189,24 +193,68 @@ def blackjack():
     start_of_turn()
 
 
-def deal_or_stand():
+def blackjack_dealer():
+    """
+    If this method is called, the dealer has a blackjack while the player does not.
+    The player loses the round!
+
+    :return: none
+    """
+
+    print("The dealer has blackjack! You lose the round!")
+
+    # the player loses all it's money
+    print("You bet a total of {} chips, you lost everything!".format(player.get_bets()))
+    print("You now have a total of {} chips.".format(player.get_funds()))
+    print("")
+
+    # Asks the player if he wants to play again
+    expected = ["Y", "N", "y", "n"]
+    while True:
+        play_again = input("Would you like to play another round? (Y / N) : ")
+
+        if play_again not in expected:
+            print("This is not a valid choice!")
+            continue
+        else:
+            if play_again == "Y" or play_again == "y":
+                break
+            else:
+                exit()
+
+    # Removes the cards from the player's and dealer's hand, and puts then back in the deck
+    for card in player.hand:
+        deck.add_card(card)
+    player.remove_cards_from_hand()
+    for card in dealer.hand:
+        deck.add_card(card)
+    dealer.remove_cards_from_hand()
+
+    # Shuffles the deck
+    deck.shuffle_deck()
+
+    # Starts a new round
+    start_of_turn()
+
+
+def hit_or_stand():
     """
     Asks the player if he wants another card, or if he wants to stand (keep the card he currently has in hand).
 
     :return: none
     """
 
-    expected = ["DEAL", "Deal", "deal", "STAND", "Stand", "stand"]
+    expected = ["HIT", "Hit", "hit", "STAND", "Stand", "stand"]
 
     while True:
-        deal_stand = input("Would you like to be dealt another card or stand on your current cards? "
-                           "(Deal / Stand) : ")
+        hit_stand = input("Would you like to be dealt another card or stand on your current cards? "
+                           "(Hit / Stand) : ")
 
-        if deal_stand not in expected:
+        if hit_stand not in expected:
             print("This is not a valid choice!")
             continue
         else:
-            if deal_stand == "DEAL" or deal_stand == "Deal" or deal_stand == "deal":
+            if hit_stand == "HIT" or hit_stand == "Hit" or hit_stand == "hit":
                 player.add_card_to_hand(deck.draw_card())
 
                 print("\n" * 100)
@@ -229,6 +277,21 @@ def deal_or_stand():
                 continue
             else:
                 return
+
+
+def dealer_hit_or_stand():
+    """
+    Does the dealer's actions until either :
+    - his total hand value is above the total hand value of the player
+    - his hand value is 17 or more
+    - he busts
+
+    :return: none
+    """
+
+    # TODO: complete this function
+
+    pass
 
 
 def check_bust():

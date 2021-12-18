@@ -1,8 +1,16 @@
-A simple 1 player against computer dealer blackjack game that plays in the Terminal!
+# SimpleBlackJack
+#### A simple 1 player against computer dealer blackjack game that plays in the Terminal!
 
 I tried to follow the rules of blackjack as much as possible.
 I've taken the rules from this website : https://bicyclecards.com/how-to-play/blackjack/
 
-This plays with a single pack of cards.
-Betting limits follow general rule, minimum of 2 and maximum of 500.
+#### Notes and tweaks
+This plays with a single pack of cards.  
+Betting limits follow general rule, minimum of 2 and maximum of 500.  
 The dealer's bank is infinite.
+
+I figured that letting players split their pairs would add a lot of 
+complexity  to the code, while not really adding much in terms of value
+to the game.  
+Since this is only supposed to be a simple python exercise, I decided 
+not to include this mechanic to the game!
