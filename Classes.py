@@ -101,6 +101,8 @@ class Player:
         ace_count = 0
 
         for card in self.hand:
+            if card.rank == "Ace":
+                ace_count = ace_count + 1
             hand_value = hand_value + card.value
 
             if hand_value > 21 and ace_count > 0:
@@ -149,6 +151,8 @@ class Dealer:
         ace_count = 0
 
         for card in self.hand:
+            if card.rank == "Ace":
+                ace_count = ace_count + 1
             hand_value = hand_value + card.value
 
             if hand_value > 21 and ace_count > 0:
